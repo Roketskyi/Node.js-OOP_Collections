@@ -26,15 +26,15 @@ class Group {
         this.students = this.students.filter(student => student.id !== id);
     }
 
-    getStudentCount() {
-        return this.students.length;
-    }
-
     getStudents() {
         return this.students.map(student => ({
             id: student.id,
             name: student.name
         }));
+    }
+
+    getStudentsCount() {
+        return this.students.length;
     }
 }
 
@@ -49,14 +49,9 @@ class University {
 
     removeGroup(name) {
         this.groups = this.groups.filter(group => group.name !== name);
-    }
-
-    getTotalStudentCount() {
-        let total = 0;
         this.groups.forEach(group => {
-            total += group.getStudentCount();
+            group.students = group.students.filter(student => student.groupName !== name);
         });
-        return total;
     }
 
     getGroupStudents(groupName) {
@@ -66,6 +61,14 @@ class University {
         } else {
             return [];
         }
+    }
+
+    getTotalStudentsCount() {
+        let total = 0;
+        this.groups.forEach(group => {
+            total += group.getStudentsCount();
+        });
+        return total;
     }
 }
 
@@ -98,4 +101,4 @@ console.log("Список студентів у групі ІПЗс-22-2 піс�
 university.removeGroup("ІПЗс-22-2");
 console.log("Список студентів у групі ІПЗс-22-2 після видалення групи:", university.getGroupStudents("ІПЗс-22-2"));
 
-console.log("К-сть студентів в університеті на даний момент:", university.getTotalStudentCount());
+console.log("Кількість студентів в університеті на даний момент:", university.getTotalStudentsCount());
