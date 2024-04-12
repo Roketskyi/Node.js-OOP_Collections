@@ -22,8 +22,8 @@ class Group {
         this.students.push(student);
     }
 
-    removeStudent(id) {
-        this.students = this.students.filter(student => student.id !== id);
+    removeStudent(student) {
+        this.students = this.students.filter(s => s.id !== student.id);
     }
 
     getStudents() {
@@ -31,10 +31,6 @@ class Group {
             id: student.id,
             name: student.name
         }));
-    }
-
-    getStudentsCount() {
-        return this.students.length;
     }
 }
 
@@ -49,9 +45,6 @@ class University {
 
     removeGroup(name) {
         this.groups = this.groups.filter(group => group.name !== name);
-        this.groups.forEach(group => {
-            group.students = group.students.filter(student => student.groupName !== name);
-        });
     }
 
     getGroupStudents(groupName) {
@@ -63,19 +56,19 @@ class University {
         }
     }
 
-    getTotalStudentsCount() {
-        let total = 0;
+    getTotalStudents() {
+        let totalStudents = 0;
         this.groups.forEach(group => {
-            total += group.getStudentsCount();
+            totalStudents += group.students.length;
         });
-        return total;
+        return totalStudents;
     }
 }
 
 // Приклад використання:
 
+// Ініціалізація та використання класів
 const university = new University();
-
 const group1 = new Group("ІПЗс-22-2");
 const group2 = new Group("Дс-21-1");
 
@@ -94,11 +87,20 @@ console.log("Список студентів у групі ІПЗс-22-2:", univ
 console.log("Список студентів у групі Дс-21-1:", university.getGroupStudents("Дс-21-1"));
 
 student1.changeName("Якийсь_Там Петро");
+console.log("К-сть студентів в університеті на даний момент:", university.getTotalStudents());
 
 console.log(`\n-------------------\n`)
+
 console.log("Список студентів у групі ІПЗс-22-2 після зміни імені:", university.getGroupStudents("ІПЗс-22-2"));
 
-university.removeGroup("ІПЗс-22-2");
-console.log("Список студентів у групі ІПЗс-22-2 після видалення групи:", university.getGroupStudents("ІПЗс-22-2"));
+group1.removeStudent(student1);
 
-console.log("Кількість студентів в університеті на даний момент:", university.getTotalStudentsCount());
+console.log("Список студентів у групі ІПЗс-22-2 після видалення студента:", university.getGroupStudents("ІПЗс-22-2"));
+
+console.log(`\n-------------------\n`)
+
+console.log("Список студентів у групі ІПЗс-22-2 після зміни імені:", university.getGroupStudents("ІПЗс-22-2"));
+university.removeGroup("Дс-21-1");
+console.log("Список студентів у групі Дс-21-1 після видалення групи:", university.getGroupStudents("Дс-21-1"));
+
+console.log("К-сть студентів в університеті на даний момент:", university.getTotalStudents());
